@@ -1,2 +1,2 @@
 # Test 1 on GitHub
-print('I'm sick of this')
+print("I'm sick of this")
