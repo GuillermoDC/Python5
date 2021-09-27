@@ -1,2 +1,3 @@
-# Test 1 on GitHub
-print("I'm sick of this")
+url = https://api.spacexdata.com/v4/launches/past
+response = erquests.get(url)
+response.json()
