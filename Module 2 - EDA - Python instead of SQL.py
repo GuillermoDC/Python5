@@ -73,3 +73,5 @@ print(recent)
 min_mass = df['PAYLOAD_MASS__KG_'].min()
 print("Minimum payload mass")
 print(min_mass)
+
+print("End of Hand-on lab EDA with SQL")
