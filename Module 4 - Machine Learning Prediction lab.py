@@ -46,7 +46,9 @@ def plot_confusion_matrix(y, y_predict, model):
     ax.xaxis.set_ticklabels(['did not land', 'land'])
     ax.yaxis.set_ticklabels(['did not land', 'landed'])
     plt.suptitle(model+' classification model')
-    plt.show()
+    # plt.show()
+    plt.savefig('Confusion Matrix - '+model+".jpg", dpi=200)
+    plt.cla()  # clear instance to free memory
 
 # Loading data (complete table of features (X) and target (Y, Class - Launch success-)
 data = pd.read_csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/dataset_part_2.csv")
@@ -175,7 +177,7 @@ logreg_cv.fit(X_train, Y_train)
 # data attribute best_params_ (dictionary): Parameter setting that gave the best results on the hold out data.
 # data attribute best_score_ (float): Mean cross-validated score of the best_estimator
 
-print("Model Logistic Regression (LR): tuned hyperparameters (best parameters):", logreg_cv.best_params_)
+print("=== Model Logistic Regression (LR): tuned hyperparameters (best parameters):", logreg_cv.best_params_)
 
 # TASK 5
 # Calculate the accuracy on the test data using the method score:
@@ -199,7 +201,7 @@ parameters2 = {'kernel': ('linear', 'rbf','poly','rbf', 'sigmoid'),
 svm = SVC()
 svm_cv = GridSearchCV(svm, parameters2, cv = 10)
 svm_cv.fit(X_train, Y_train)
-print("Model support vector machine (SVM). Tuned hyperparameters (best parameters):", svm_cv.best_params_)
+print("=== Model support vector machine (SVM). Tuned hyperparameters (best parameters):", svm_cv.best_params_)
 
 # TASK 7
 # Calculate the accuracy on the test data using the method score:
@@ -226,7 +228,7 @@ tree = DecisionTreeClassifier()
 tree_cv = GridSearchCV(tree, parameters3, cv = 10)
 tree_cv.fit(X_train, Y_train)
 
-print("Model Decision Tree. Tuned hyperparameters (best parameters):", tree_cv.best_params_)
+print("=== Model Decision Tree. Tuned hyperparameters (best parameters):", tree_cv.best_params_)
 
 # TASK 9
 # Calculate the accuracy of tree_cv on the test data using the method score:
@@ -247,7 +249,7 @@ KNN = KNeighborsClassifier()
 knn_cv = GridSearchCV(KNN, parameters4, cv = 10)
 knn_cv.fit(X_train, Y_train)
 
-print("Model K-Nearest Neighbor tuned hyperparameters (best parameters):", knn_cv.best_params_)
+print("=== Model K-Nearest Neighbor tuned hyperparameters (best parameters):", knn_cv.best_params_)
 
 # TASK 11
 # Calculate the accuracy of tree_cv on the test data using the method score:
@@ -270,7 +272,8 @@ plt.title('Classification accuracy per method', loc='center')
 plt.ylabel('Accuracy')
 plt.xlabel('Classification method')
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig('Classification accuracy per method.jpg', dpi=200)
 
 
 print("==== [[[[[ End of Hand-on Module 4 Machine Learning Prediction lab ]]]] =====")
