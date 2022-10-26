@@ -12,14 +12,15 @@ pd.set_option('display.width', 800)  # avoid truncated view
 pd.set_option('display.max_columns', 50)  # columns shown
 pd.set_option('display.max_rows', 999)  # rows shown
 
-# ===== Data Anslysis ====== #
+# ===== Data Analysis ====== #
 # Load Space X dataset, from last section.
 df = pd.read_csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/dataset_part_1.csv")
+print("Imported DataFrame contains:", len(df), "rows and ", len(df.columns), "columns.")
 print(df.head(10))
 # Percentage of the missing values in each attribute
 print(" === Percentage of the missing values in each column")
 print(df.isnull().sum()/df.count()*100)
-# Numerial/categorial columns
+# Numerical/categorial columns
 # print(df.dtypes)
 
 
@@ -56,10 +57,12 @@ for i, outcome in enumerate(landing_outcomes.keys()):
     print(i, outcome)
 
 # set of outcomes where the second stage did not land successfully
-# bad_outcomes = set(landing_outcomes.keys()[[1, 3, 5, 6, 7]]) # this is wrongly given in the edx notebook
-bad_outcomes = df['Outcome'].str.contains('None')
-print(" === Outcomes where the second stage did not land successfully")
-# print(bad_outcomes)
+# bad_outcomes = set(landing_outcomes.keys()[[1, 3, 5, 6, 7]]) # <-- clumsy method where one has to manually look for rows where None is present.
+bad_outcomes = df['Outcome'].str.contains('None', regex=False).sum()
+print(" === Outcomes where the second stage did not land successfully (None is present)")
+print(bad_outcomes)
+print("=== Outcomes overview table")
+print(df['Outcome'].value_counts())
 
 # TASK 4: Create a landing outcome label from Outcome column
 # Using the Outcome, create a list where the element is zero if the corresponding row in Outcome is in
@@ -74,15 +77,29 @@ for outcome in df['Outcome']:
 # Add this class to the dataframe
 # df['Class'] = landing_class
 # df['Class'] = []
+# df['Class'] = ''
+#
+# # Using a fast numpy method:
+# Failure_condition = ['None', 'False'] # contains these words
+# for i, row in df.interrows():
+#     eval = row['Outcome']
+#     print("Loop iteration", i)
+#     print("evaluating:", row['Outcome', 'Class'])
+#     if eval.isin(Failure_condition):
+#         row['Class'] == 0
+#     else:
+#         row['Class'] == 1
 
-# Using a fast numpy method:
-df['Class'] = np.where(df['Outcome'].str.contains('None'), 0, 1)
+# df['Class'] = np.where(df['Outcome'].str.contains('None'), 0, 1) # But this does not account for the False cases, hence gives only 21 failures
+df['Class'] = np.where((df['Outcome'].str.contains('None')) | (df['Outcome'].str.contains('False')), 0, 1)
+df['Class'] = np.where(df['LandingPad']== np.NaN, 0, 1) # rif Landing pas is no kwnon, does not count
+# df['Class'] = np.where(np.logical_and((df['Outcome'].str.contains('None'), 0, 1), (df['Outcome'].str.contains('False'), 0, 1))) # does not work
 
 print("=== Number of failures to land")
 print((df['Class'].values == 0).sum())
 
 print(" === Complete table with Class outcome added")
-print(df)
+print(df.head())
 
 # Success rate
 print("=== Success rate")
