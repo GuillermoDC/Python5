@@ -50,7 +50,7 @@ def plot_confusion_matrix(y, y_predict, model):
     ax.xaxis.set_ticklabels(['did not land', 'land'])
     ax.yaxis.set_ticklabels(['did not land', 'landed'])
     plt.suptitle(model+' classification model')
-    # plt.show()
+    plt.show()
     plt.tight_layout()
     plt.savefig('Confusion Matrix - '+model+".jpg", dpi=200)
     plt.cla()  # clear instance to free memory
@@ -272,7 +272,7 @@ def Plot_Tree(X_input, Y_input):
     plt.savefig('Decision tree trained.jpg', dpi=500)
     plt.show()
 # Graph the Decision tree used after training (on train dataset)
-# Plot_Tree(X_train, Y_train)
+Plot_Tree(X_train, Y_train)
 
 # Plot the confusion matrix on the test dataset, after being optimized for the train dataset
 yhat = tree_cv.predict(X_test)
